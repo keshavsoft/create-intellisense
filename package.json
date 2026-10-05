@@ -1,0 +1,32 @@
+{
+  "name": "create-intellisense",
+  "version": "1.0.0",
+  "description": "Zero-dependency TypeScript declaration (index.d.ts) generator for JSON-driven NPM architectures.",
+  "type": "module",
+  "bin": {
+    "create-intellisense": "./bin/create-intellisense.js"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/test.js"
+  },
+  "keywords": [
+    "create",
+    "intellisense",
+    "typescript",
+    "dts",
+    "generator",
+    "json-driven",
+    "types"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.10"
+  }
+}
