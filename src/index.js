@@ -1,3 +1,3 @@
-import createIntellisense from "./v1/index.js";
+import createIntellisense from "./v2/index.js";
 
 export default createIntellisense;

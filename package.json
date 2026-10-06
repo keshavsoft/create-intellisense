@@ -1,21 +1,39 @@
 {
   "name": "create-intellisense",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "description": "Zero-dependency TypeScript declaration (index.d.ts) generator for JSON-driven NPM architectures.",
   "type": "module",
   "bin": {
     "create-intellisense": "./bin/create-intellisense.js"
   },
   "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "bin",
     "src",
+    "docs",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/test.js"
+    "test": "node --test test/test.js",
+    "prepack": "npm test"
   },
+  "homepage": "https://github.com/keshavsoft/create-intellisense#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keshavsoft/create-intellisense.git"
+  },
+  "bugs": {
+    "url": "https://github.com/keshavsoft/create-intellisense/issues"
+  },
+  "author": "KeshavSoft",
   "keywords": [
     "create",
     "intellisense",
@@ -23,10 +41,14 @@
     "dts",
     "generator",
     "json-driven",
-    "types"
+    "types",
+    "keshavsoft"
   ],
   "license": "MIT",
   "engines": {
     "node": ">=20.10"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
