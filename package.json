@@ -25,7 +25,7 @@
     "test": "node --test test/test.js",
     "prepack": "npm test"
   },
-  "homepage": "https://github.com/keshavsoft/create-intellisense#readme",
+  "homepage": "https://keshavsoft.github.io/create-intellisense/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/keshavsoft/create-intellisense.git"

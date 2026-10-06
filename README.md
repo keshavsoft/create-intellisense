@@ -9,7 +9,7 @@
 
 Automatically analyzes your versioned source tree (`src/v1`, `src/v2`, `src/v7`), parses your public route allowlist (`api.json`) and domain definition tree (`source.json`), infers strongly typed DTOs, and writes production-ready TypeScript declarations directly to your project's configured types path.
 
-**[Documentation Hub](docs/index.html)** · **[View on npm](https://www.npmjs.com/package/create-intellisense)**
+**[Documentation Hub](https://keshavsoft.github.io/create-intellisense/)** · **[View on npm](https://www.npmjs.com/package/create-intellisense)**
 
 ---
 
