@@ -79,7 +79,7 @@ Add the verification hook to your `package.json`:
     "prepack": "npm run verify"
   },
   "devDependencies": {
-    "create-intellisense": "^1.0.0"
+    "create-intellisense": "^1.2.1"
   }
 }
 ```

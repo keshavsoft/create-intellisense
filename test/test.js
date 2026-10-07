@@ -142,3 +142,67 @@ test("supports flattened layout with api.json at version root and package.json t
     assert.ok(content.includes("declare const tally: TallyApi;"));
     assert.ok(content.includes("export default tally;"));
 });
+
+test("supports resolving api.json and source.json from an imported spec dependency", (t) => {
+    const specProjectDir = path.join(__dirname, "temp-spec-project");
+    const v3Dir = path.join(specProjectDir, "src", "v3");
+    const fakeSpecDir = path.join(specProjectDir, "node_modules", "sample-spec");
+    fs.mkdirSync(v3Dir, { recursive: true });
+    fs.mkdirSync(fakeSpecDir, { recursive: true });
+
+    fs.writeFileSync(
+        path.join(specProjectDir, "package.json"),
+        JSON.stringify({
+            name: "test-spec-consumer",
+            types: "index.d.ts"
+        }, null, 2)
+    );
+    fs.writeFileSync(
+        path.join(specProjectDir, "src", "index.js"),
+        'export { default } from "./v3/index.js";\n'
+    );
+    fs.writeFileSync(
+        path.join(v3Dir, "index.js"),
+        'import { source, apiPaths } from "sample-spec";\nexport default {};\n'
+    );
+    fs.writeFileSync(
+        path.join(fakeSpecDir, "api.json"),
+        JSON.stringify(["app.billing.invoice.fetch"], null, 2)
+    );
+    fs.writeFileSync(
+        path.join(fakeSpecDir, "source.json"),
+        JSON.stringify({
+            app: {
+                billing: {
+                    invoice: {
+                        fetch: {
+                            action: "fetchInvoice",
+                            description: "Fetches an invoice."
+                        }
+                    }
+                }
+            }
+        }, null, 2)
+    );
+
+    t.after(() => {
+        if (fs.existsSync(specProjectDir)) {
+            fs.rmSync(specProjectDir, { recursive: true, force: true });
+        }
+    });
+
+    const result = createIntellisense({
+        inProjectRoot: specProjectDir
+    });
+
+    assert.equal(result.version, "v3");
+    assert.equal(result.routesCount, 1);
+    assert.equal(result.outputFile, path.join(specProjectDir, "index.d.ts"));
+    assert.ok(fs.existsSync(result.outputFile));
+
+    const content = fs.readFileSync(result.outputFile, "utf8");
+    assert.ok(content.includes("export type AppApi"));
+    assert.ok(content.includes("invoice: {"));
+    assert.ok(content.includes("fetch: (inParam: string, ...inArgs: any[]) => Promise<any>;"));
+});
+

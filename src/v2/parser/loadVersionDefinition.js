@@ -23,6 +23,27 @@ const startFunc = ({ inVersion }) => {
         sourceFile = path.join(localVersion.directory, "internal-working", "source.json");
     }
 
+    if (!fs.existsSync(apiFile) || !fs.existsSync(sourceFile)) {
+        const indexFile = path.join(localVersion.directory, "index.js");
+        if (fs.existsSync(indexFile)) {
+            const indexContent = fs.readFileSync(indexFile, "utf8");
+            const specMatches = [...indexContent.matchAll(/from\s+["']([^"']+)["']/g)];
+            for (const match of specMatches) {
+                const specPkg = match[1];
+                if (!specPkg.startsWith(".")) {
+                    const pkgDir = path.resolve(localVersion.directory, "..", "..", "node_modules", specPkg);
+                    const candidateApi = path.join(pkgDir, "api.json");
+                    const candidateSource = path.join(pkgDir, "source.json");
+                    if (fs.existsSync(candidateApi) && fs.existsSync(candidateSource)) {
+                        if (!fs.existsSync(apiFile)) apiFile = candidateApi;
+                        if (!fs.existsSync(sourceFile)) sourceFile = candidateSource;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     if (!fs.existsSync(apiFile)) {
         throw new Error(`Missing api.json in ${localVersion.directory}`);
     }
